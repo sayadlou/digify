@@ -1,10 +1,7 @@
-from django.db.models import Value
-from django.shortcuts import render
-
-# Create your views here.
-from rest_framework import mixins
+from rest_framework import mixins, permissions
 from rest_framework.viewsets import GenericViewSet
 
+from .filters import ClientFilter
 from .models import Client
 from .serializers import ClientSerializer
 
@@ -12,8 +9,8 @@ from .serializers import ClientSerializer
 class ClientViewSet(mixins.CreateModelMixin,
                     mixins.ListModelMixin,
                     GenericViewSet):
-    """Handle creating and updating profiles"""
+    """Handle creating and listing clients"""
     serializer_class = ClientSerializer
-    queryset = Client.objects.all()#todo add account_balance , debit
-    filterset_fields = ['first_name', 'last_name', 'national_id', ]
-    # permission_classes = (permissions.IsAdminUser)
+    queryset = Client.objects.all()
+    filterset_class = ClientFilter
+    permission_classes = (permissions.IsAuthenticated,)

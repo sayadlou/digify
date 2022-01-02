@@ -15,14 +15,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.routers import DefaultRouter
 
+from apps.branch.views import CustomAuthToken, RegisterView
 from apps.client.views import ClientViewSet
 
 router = DefaultRouter()
 router.register('client', ClientViewSet)
+router.register('branch', RegisterView)
 
 urlpatterns = [
     path('apiv1/', include(router.urls)),
+    path("apiv1/login", CustomAuthToken.as_view()),
 
 ]
