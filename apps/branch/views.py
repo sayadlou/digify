@@ -6,9 +6,11 @@ from rest_framework import generics, permissions, mixins
 from rest_framework.viewsets import GenericViewSet
 
 from .serializers import RegisterSerializer
+from .throttle import LoginRateThrottle
 
 
 class CustomAuthToken(ObtainAuthToken):
+    throttle_classes = [LoginRateThrottle]
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
@@ -24,8 +26,8 @@ class CustomAuthToken(ObtainAuthToken):
 
 
 class RegisterView(mixins.CreateModelMixin,
-                    mixins.ListModelMixin,
-                    GenericViewSet):
+                   mixins.ListModelMixin,
+                   GenericViewSet):
     queryset = User.objects.all()
     permission_classes = (permissions.IsAdminUser,)
     serializer_class = RegisterSerializer

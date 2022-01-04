@@ -20,10 +20,13 @@ from rest_framework.routers import DefaultRouter
 
 from apps.branch.views import CustomAuthToken, RegisterView
 from apps.client.views import ClientViewSet
+from apps.credit.views import AccountViewSet, TransactionViewSet
 
 router = DefaultRouter()
 router.register('client', ClientViewSet)
 router.register('branch', RegisterView)
+router.register('account', AccountViewSet)
+router.register('transaction', TransactionViewSet)
 
 urlpatterns = [
     path('apiv1/', include(router.urls)),
