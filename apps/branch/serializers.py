@@ -11,22 +11,23 @@ class RegisterSerializer(serializers.ModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())]
     )
 
-    password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
-    password2 = serializers.CharField(write_only=True, required=True)
+    password = serializers.CharField(
+        help_text='Leave empty if no change needed',
+        style={'input_type': 'password', 'placeholder': 'Password'},
+        write_only=True,
+        required=True,
+        validators=[validate_password]
+    )
+    password2 = serializers.CharField(
+        help_text='Leave empty if no change needed',
+        style={'input_type': 'password', 'placeholder': 'Password'},
+        write_only=True,
+        required=True
+    )
 
     class Meta:
         model = User
         fields = ('username', 'password', 'password2', 'email')
-        extra_kwargs = {
-            'password': {
-                'write_only': True,
-                'style': {'input_type': 'password'}
-            },
-            'password2': {
-                'write_only': True,
-                'style': {'input_type': 'password'}
-            }
-        }
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:

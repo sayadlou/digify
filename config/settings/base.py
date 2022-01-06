@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.client',
     'apps.branch',
     'apps.credit',
+    'apps.debit',
 
 ]
 

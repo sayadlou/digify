@@ -1,17 +1,27 @@
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 
-from .Policy import TRANSACTION_MAX_DIGITS, TRANSACTION_MIN_VALUE, TRANSACTION_MAX_VALUE
+from .policy import TRANSACTION_MAX_DIGITS, TRANSACTION_MIN_VALUE, TRANSACTION_MAX_VALUE
 from .models import Account, Transaction
 
 
 class AccountSerializer(serializers.ModelSerializer):
     """Serializes Account object"""
+    branch = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Account
-        fields = ('owner', 'balance',)
+        fields = ('id', 'status', 'owner', 'balance', 'branch')
+
+
+class AccountUpdateSerializer(serializers.ModelSerializer):
+    """Serializes Account object"""
+
+    class Meta:
+        model = Account
+        fields = ('id', 'status')
 
 
 class TransactionSerializer(serializers.ModelSerializer):

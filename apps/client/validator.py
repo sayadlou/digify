@@ -14,3 +14,10 @@ def is_valid_iran_code(value):
     else:
         if not check + s == 11:
             raise ValidationError('Invalid Iranian National ID', code='invalid')
+
+
+def is_valid_mobile_number(value):
+    if not re.search(r'^\d{11}$', value):
+        raise ValidationError('Invalid mobile number', code='invalid')
+    if not value.startswith("09"):
+        raise ValidationError('Invalid mobile number', code='invalid')

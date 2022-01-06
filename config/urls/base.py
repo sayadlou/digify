@@ -14,22 +14,31 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.http import HttpResponse
 from django.urls import path, include
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.routers import DefaultRouter
 
 from apps.branch.views import CustomAuthToken, RegisterView
 from apps.client.views import ClientViewSet
+from apps.credit.models import Account
 from apps.credit.views import AccountViewSet, TransactionViewSet
+from apps.debit.views import LoanViewSet
 
 router = DefaultRouter()
 router.register('client', ClientViewSet)
 router.register('branch', RegisterView)
 router.register('account', AccountViewSet)
 router.register('transaction', TransactionViewSet)
+router.register('loan', LoanViewSet)
+
+
+
+
 
 urlpatterns = [
     path('apiv1/', include(router.urls)),
     path("apiv1/login", CustomAuthToken.as_view()),
+
 
 ]
