@@ -23,6 +23,7 @@ from apps.branch.views import CustomAuthToken, RegisterView
 from apps.client.views import ClientViewSet
 from apps.credit.models import Account
 from apps.credit.views import AccountViewSet, TransactionViewSet
+from apps.credit.tasks import notify_customers
 from apps.debit.views import LoanViewSet
 
 router = DefaultRouter()
@@ -33,12 +34,14 @@ router.register('transaction', TransactionViewSet)
 router.register('loan', LoanViewSet)
 
 
-
+def celery(request):
+    notify_customers.delay("salam")
+    return HttpResponse("done")
 
 
 urlpatterns = [
     path('apiv1/', include(router.urls)),
     path("apiv1/login", CustomAuthToken.as_view()),
-
+    path("task", celery),
 
 ]

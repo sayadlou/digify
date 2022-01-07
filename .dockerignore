@@ -1,0 +1,7 @@
+.git
+.idea
+/practice/
+./.env
+./.env.dev
+./.env.prod
+./.env.db

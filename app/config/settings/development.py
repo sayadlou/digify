@@ -1,3 +1,5 @@
+import os
+
 from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -13,10 +15,10 @@ ROOT_URLCONF = 'config.urls.development'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'digify',
-        'USER': 'postgres',
-        'PASSWORD': env('db_password'),
-        'HOST': '127.0.0.1',
+        'NAME': os.environ.get('POSTGRES_DB'),
+        'USER': os.environ.get('POSTGRES_USER'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
@@ -35,3 +37,5 @@ INTERNAL_IPS = [
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = BASE_DIR / "sent_email"
+
+

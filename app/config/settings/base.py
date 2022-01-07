@@ -9,23 +9,20 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-import environ
+import os
 from pathlib import Path
+from celery.schedules import crontab
 
-# define env variable from environ
-env = environ.Env()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-# Load .env file
-environ.Env.read_env(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # Application definition
 
@@ -132,4 +129,20 @@ REST_FRAMEWORK = {
         'anon': '1/min',
         'user': '500/day'
     }
+}
+
+CELERY_BROKER_URL = 'redis://redis:6379/1'
+CELERY_BEAT_SCHEDULE = {
+    'daily_profit_calculate': {
+        'task': 'apps.credit.tasks.daily_profit_calculate',
+        'schedule': crontab(minute=0, hour=0),
+    },
+    'yearly_profit_apply': {
+        'task': 'apps.credit.tasks.yearly_profit_apply',
+        'schedule': crontab(0, 0, day_of_month='1', month_of_year='1'),
+    },
+    'test': {
+        'task': 'apps.credit.tasks.test',
+        'schedule': 60,
+    },
 }
