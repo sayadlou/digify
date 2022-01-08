@@ -87,6 +87,8 @@ class TransactionViewSet(mixins.ListModelMixin,
         else:
             account.balance -= int(data['value'])
         account.save()
+        account.owner.balance = account.balance
+        account.owner.save()
         self.serializer.save()
         self.headers = self.get_success_headers(self.serializer.data)
 
@@ -103,6 +105,8 @@ class TransactionViewSet(mixins.ListModelMixin,
 
         account.balance += int(data['value'])
         account.save()
+        account.owner.balance = account.balance
+        account.owner.save()
         source.balance -= int(data['value'])
         source.save()
         source.owner.balance = source.balance

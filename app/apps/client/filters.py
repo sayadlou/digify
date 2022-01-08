@@ -10,7 +10,8 @@ class ClientFilter(FilterSet):
             'first_name': ['exact'],
             'last_name': ['exact'],
             'national_id': ['exact'],
-            # 'balance': ['gt', 'lt'],
-            # 'total_loan': ['gt', 'lt'],
-            # 'total_debit': ['gt', 'lt'],
+            'balance': ['gt', 'lt'],
+            'total_loan': ['gt', 'lt'],
+            'total_debit': ['gt', 'lt'],
         }
+

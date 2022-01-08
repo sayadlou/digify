@@ -36,6 +36,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
+        """"
+        create method for registering branch of bank
+        """
         user = User.objects.create(
             username=validated_data['username'],
             email=validated_data['email'],

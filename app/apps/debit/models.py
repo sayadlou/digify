@@ -8,6 +8,8 @@ from apps.client.models import Client
 from apps.credit.policy import TRANSACTION_MIN_VALUE, TRANSACTION_MAX_VALUE, TRANSACTION_MAX_DIGITS, ACCOUNT_MAX_DIGITS
 from apps.debit.policy import LOAN_MAX_DIGITS, LOAN_MIN_VALUE
 
+from apps.debit.policy import LOAN_MAX_VALUE
+
 
 class Loan(models.Model):
     """credit model for saving information of client credit"""
@@ -20,10 +22,10 @@ class Loan(models.Model):
         (24, 24)
     )
     id = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    owner = models.OneToOneField(Client, on_delete=models.RESTRICT)
+    owner = models.ForeignKey(Client, on_delete=models.RESTRICT)
     amount = models.DecimalField(max_digits=LOAN_MAX_DIGITS, decimal_places=0, default=0,
                                  validators=[MinValueValidator(LOAN_MIN_VALUE),
-                                             MaxValueValidator(LOAN_MIN_VALUE)])
+                                             MaxValueValidator(LOAN_MAX_VALUE)])
     remained_amount = models.DecimalField(max_digits=ACCOUNT_MAX_DIGITS, decimal_places=0)
     status = models.CharField(max_length=20, choices=STATUS, default="Open")
     total_installment = models.IntegerField(choices=TOTAL_INSTALLMENT)

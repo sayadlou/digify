@@ -11,7 +11,8 @@ def notify_customers(sms):
     api_key = os.environ.get('kavenegar_api_key')
     api = KavenegarAPI(api_key)
     params = {'sender': '100047778', 'receptor': sms['mobile_number'], 'message': sms['content']}
-    print(api.sms_send(params))
+    # print(api.sms_send(params))
+    print("sms sent")
 
 
 @shared_task
@@ -24,8 +25,3 @@ def daily_profit_calculate():
 def yearly_profit_apply():
     Account.apply_profit()
     print("profit of accounts applied")
-
-
-@shared_task
-def test():
-    print("test done")
